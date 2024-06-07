@@ -6,6 +6,19 @@
 using namespace std;
 
 //Descomponer dia fecha y año
+bool validarFecha(const string& fecha);
+void ingresarEventos(map<string, string>& eventos);
+void mostrarEventos(const map<string, string>& eventos);
+
+int main() {
+    map<string, string> eventos;
+
+    ingresarEventos(eventos);
+    mostrarEventos(eventos);
+
+    return 0;
+}
+
 bool validarFecha(const string& fecha) {
     istringstream iss(fecha);
     string dia, mes, anio;
@@ -62,13 +75,4 @@ void mostrarEventos(const map<string, string>& eventos) {
     for (const auto& par : eventos) {
         cout << "Fecha: " << par.first << " -> Evento: " << par.second << endl;
     }
-}
-
-int main() {
-    map<string, string> eventos;
-
-    ingresarEventos(eventos);
-    mostrarEventos(eventos);
-
-    return 0;
 }

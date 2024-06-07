@@ -14,11 +14,11 @@ Ofrezco este nuevo tipo de Base de Datos porque es un modelo SIMPLE, que se amol
 
 *DESCRIPCION(funciones, estructuras, etc..)*
 Funciones Principales:
- -Agregar Evento
- -Eliminar Evento
- -Eliminar Eventos de la Misma Fecha
- -Buscar Evento
- -Mostrar Evento
+ -Agregar Evento.- Esta funcion nos permitira agregar un evento a una fecha ya conocida o una nueva fecha
+ -Eliminar Evento.- Esta funcion nos pedira tanto una fecha como el nombre del evento para eliminarla una vez eliminado nos mostrara el mensaje de que se borro correctamente
+ -Eliminar Eventos de la Misma Fecha.- Esta funcion solo nos pedira la fecha, y borrara todos los elementos contenidos en dicha fecha, asi mismo nos mostrara la cantidad de elementos que borro
+ -Buscar Evento.- Esta funcion nos pedira una fecha y nos mostrara todos los eventos contenidos en esta fecha
+ -Mostrar Evento.- Esta funcion se encarga de mostrarnos todas las fechas y eventos contenidas en nuestra base de datos 
 
 *DIAGRAMA O PSEUDOCODIGO*
 
