@@ -5,15 +5,46 @@
 
 using namespace std;
 
-// Función para ingresar eventos
+//Descomponer dia fecha y año
+bool validarFecha(const string& fecha) {
+    istringstream iss(fecha);
+    string dia, mes, anio;
+
+    if (getline(iss, dia, '-') && getline(iss, mes, '-') && getline(iss, anio)) {
+        
+        int diaInt = stoi(dia);
+        int mesInt = stoi(mes);
+        
+        if (diaInt > 0 && mesInt > 0 && mesInt <= 12) {
+            return true;
+        } 
+        else {
+            if (diaInt <= 0 || 31 <= diaInt) {
+                cout << "El día debe estar entre 0 y 31.\n";
+            }
+            if (mesInt <= 0 || mesInt > 12) {
+                cout << "El mes debe estar entre 1 y 12.\n";
+            }
+            return false;
+        }
+    } 
+    else {
+        cout << "Formato de fecha incorrecto. Use dd-mm-aaaa.\n";
+        return false;
+    }
+}
+
+
 void ingresarEventos(map<string, string>& eventos) {
     string fecha, evento;
     char opcion;
 
     do {
-        cout << "Ingrese la fecha (dd-mm-aaaa): ";
-        cin >> fecha;
-        cin.ignore(); // Ignorar el carácter de nueva línea residual
+        do {
+            cout << "Ingrese la fecha (dd-mm-aaaa): ";
+            cin >> fecha;
+            cin.ignore(); // Ignorar el carácter de nueva línea residual
+        } while (!validarFecha(fecha));
 
         cout << "Ingrese el evento: ";
         getline(cin, evento);
@@ -25,7 +56,7 @@ void ingresarEventos(map<string, string>& eventos) {
     } while (opcion == 's' || opcion == 'S');
 }
 
-// Función para mostrar eventos almacenados
+
 void mostrarEventos(const map<string, string>& eventos) {
     cout << "\nEventos almacenados:\n";
     for (const auto& par : eventos) {
