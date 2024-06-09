@@ -9,12 +9,41 @@ using namespace std;
 bool validarFecha(const string& fecha);
 void ingresarEventos(map<string, string>& eventos);
 void mostrarEventos(const map<string, string>& eventos);
+void eliminarEvento(map<string, string>& eventos);
 
 int main() {
     map<string, string> eventos;
 
-    ingresarEventos(eventos);
-    mostrarEventos(eventos);
+    char opcion;
+
+    do {
+        std::cout << "Menú:\n";
+        std::cout << "1. Ingresar evento\n";
+        std::cout << "2. Mostrar eventos\n";
+        std::cout << "3. Eliminar evento\n";
+        std::cout << "4. Salir\n";
+        std::cout << "Seleccione una opción: ";
+        std::cin >> opcion;
+        std::cin.ignore(); // Ignorar el carácter de nueva línea residual
+
+        switch (opcion) {
+            case '1':
+                ingresarEventos(eventos);
+                break;
+            case '2':
+                mostrarEventos(eventos);
+                break;
+            case '3':
+                eliminarEvento(eventos);
+                break;
+            case '4':
+                cout << "Saliendo...\n";
+                break;
+            default:
+                cout << "Opción no válida.\n";
+                break;
+        }
+    } while (opcion != '4');
 
     return 0;
 }
@@ -74,5 +103,29 @@ void mostrarEventos(const map<string, string>& eventos) {
     cout << "\nEventos almacenados:\n";
     for (const auto& par : eventos) {
         cout << "Fecha: " << par.first << " -> Evento: " << par.second << endl;
+    }
+}
+
+void eliminarEvento(map<string, string>& eventos) {
+    string fecha, evento;
+
+    cout << "Ingrese la fecha del evento a eliminar (dd-mm-aaaa): ";
+    cin >> fecha;
+    cin.ignore(); // Ignorar el carácter de nueva línea residual
+
+    if (!validarFecha(fecha)) {
+        cout << "Fecha no válida.\n";
+        return;
+    }
+
+    cout << "Ingrese el nombre del evento a eliminar: ";
+    getline(cin, evento);
+
+    auto it = eventos.find(fecha);
+    if (it != eventos.end() && it->second == evento) {
+        eventos.erase(it);
+        cout << "Deleted successfully.\n";
+    } else {
+        cout << "Event not found.\n";
     }
 }
