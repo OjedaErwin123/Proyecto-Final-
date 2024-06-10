@@ -12,6 +12,8 @@ void ingresarEventos(map<string, string>& eventos);
 void mostrarEventos(const map<string, string>& eventos);
 void eliminarEvento(map<string, string>& eventos);
 void eliminarEventosPorFecha(map<string, vector<string>>& eventos);
+void buscarEventosPorFecha(const map<string, vector<string>>& eventos);
+
 
 int main() {
     map<string, vector<string>> eventos;
@@ -177,5 +179,28 @@ void eliminarEventosPorFecha(map<string, vector<string>>& eventos) {
         cout << "Deleted " << eventosEliminados << " events\n";
     } else {
         cout << "Deleted 0 events\n";
+    }
+}
+
+void buscarEventosPorFecha(const map<string, vector<string>>& eventos) {
+    string fecha;
+
+    cout << "Ingrese la fecha para buscar eventos (dd-mm-aaaa): ";
+    cin >> fecha;
+    cin.ignore(); // Ignorar el carácter de nueva línea residual
+
+    if (!validarFecha(fecha)) {
+        cout << "Fecha no válida.\n";
+        return;
+    }
+
+    auto it = eventos.find(fecha);
+    if (it != eventos.end()) {
+        cout << "Eventos en la fecha " << fecha << ":\n";
+        for (const auto& evento : it->second) {
+            cout << "- " << evento << "\n";
+        }
+    } else {
+        cout << "No se encontraron eventos en la fecha " << fecha << ".\n";
     }
 }
