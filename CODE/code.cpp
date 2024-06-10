@@ -6,12 +6,12 @@
 
 using namespace std;
 
-//Descomponer dia fecha y año
-bool validarFecha(const string& fecha);
+
+bool validarFecha(const string& fecha);//Descomponer dia fecha y año
 void ingresarEventos(map<string, string>& eventos);
 void mostrarEventos(const map<string, string>& eventos);
 void eliminarEvento(map<string, string>& eventos);
-
+void eliminarEventosPorFecha(map<string, vector<string>>& eventos);
 
 int main() {
     map<string, vector<string>> eventos;
@@ -22,10 +22,11 @@ int main() {
         cout << "1. Ingresar evento\n";
         cout << "2. Mostrar eventos\n";
         cout << "3. Eliminar evento\n";
-        cout << "4. Salir\n";
+        cout << "4. Eliminar todos los eventos de una fecha\n";
+        cout << "5. Salir\n";
         cout << "Seleccione una opción: ";
         cin >> opcion;
-        cin.ignore(); 
+        cin.ignore();
 
         switch (opcion) {
             case '1':
@@ -38,13 +39,16 @@ int main() {
                 eliminarEvento(eventos);
                 break;
             case '4':
+                eliminarEventosPorFecha(eventos);
+                break;
+            case '5':
                 cout << "Saliendo...\n";
                 break;
             default:
                 cout << "Opción no válida.\n";
                 break;
         }
-    } while (opcion != '4');
+    } while (opcion != '5');
 
     return 0;
 }
@@ -151,5 +155,27 @@ void eliminarEvento(map<string, vector<string>>& eventos) {
         }
     } else {
         cout << "Event not found.\n";
+    }
+}
+
+void eliminarEventosPorFecha(map<string, vector<string>>& eventos) {
+    string fecha;
+
+    cout << "Ingrese la fecha de los eventos a eliminar (dd-mm-aaaa): ";
+    cin >> fecha;
+    cin.ignore();
+
+    if (!validarFecha(fecha)) {
+        cout << "Fecha no válida.\n";
+        return;
+    }
+
+    auto it = eventos.find(fecha);
+    if (it != eventos.end()) {
+        int eventosEliminados = it->second.size();
+        eventos.erase(it);
+        cout << "Deleted " << eventosEliminados << " events\n";
+    } else {
+        cout << "Deleted 0 events\n";
     }
 }
