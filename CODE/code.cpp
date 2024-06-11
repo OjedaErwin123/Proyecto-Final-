@@ -95,30 +95,29 @@ bool validarFecha(const string& fecha) {
 }
 
 void ingresarEventos(map<string, vector<string>>& eventos) {
-    string fecha, evento;
-    char opcion, opcionMasEventos;
+    string fechaEvento;
+    char opcion;
 
     do {
         do {
-            cout << "Ingrese la fecha (aaaa-mm-dd): ";
-            cin >> fecha;
-            cin.ignore(); 
-        } while (!validarFecha(fecha));
+            cout << "Ingrese la fecha y el evento : ";
+            getline(cin, fechaEvento);
 
-        do {
-            cout << "Ingrese el evento: ";
-            getline(cin, evento);
+            istringstream iss(fechaEvento);
+            string fecha, evento;
 
-            eventos[fecha].push_back(evento);
+            iss >> fecha;
+            getline(iss, evento);
 
-            cout << "¿Desea agregar otro evento en la misma fecha? (s/n): ";
-            cin >> opcionMasEventos;
-            cin.ignore(); 
-        } while (opcionMasEventos == 's' || opcionMasEventos == 'S');
+            if (validarFecha(fecha)) {
+                eventos[fecha].push_back(evento);
+                break;
+            }
+        } while (true);
 
-        cout << "¿Desea ingresar un evento en otra fecha? (s/n): ";
+        cout << "¿Desea ingresar otro evento? (s/n): ";
         cin >> opcion;
-        cin.ignore(); 
+        cin.ignore();
     } while (opcion == 's' || opcion == 'S');
 }
 
@@ -179,7 +178,7 @@ void eliminarEvento(map<string, vector<string>>& eventos) {
 void eliminarEventosPorFecha(map<string, vector<string>>& eventos) {
     string fecha;
 
-    cout << "Ingrese la fecha de los eventos a eliminar (aaaa-mm-dd): ";
+    cout << "Ingrese la fecha de los eventos a eliminar: ";
     cin >> fecha;
     cin.ignore();
 
@@ -202,7 +201,7 @@ void eliminarEventosPorFecha(map<string, vector<string>>& eventos) {
 void buscarEventosPorFecha(const map<string, vector<string>>& eventos) {
     string fecha;
 
-    cout << "Ingrese la fecha para buscar eventos (aaaa-mm-dd): ";
+    cout << "Ingrese la fecha para buscar eventos: ";
     cin >> fecha;
     cin.ignore(); 
 
