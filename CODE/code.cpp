@@ -17,7 +17,7 @@ void buscarEventosPorFecha(const map<string, vector<string>>& eventos);
 
 int main() {
     map<string, vector<string>> eventos;
-    char opcion;
+    string opcion;
 
     do {
         cout << "Menú:\n";
@@ -31,30 +31,22 @@ int main() {
         cin >> opcion;
         cin.ignore();
 
-        switch (opcion) {
-            case '1':
-                ingresarEventos(eventos);
-                break;
-            case '2':
-                mostrarEventos(eventos);
-                break;
-            case '3':
-                eliminarEvento(eventos);
-                break;
-            case '4':
-                eliminarEventosPorFecha(eventos);
-                break;
-            case '5':
-                buscarEventosPorFecha(eventos);
-                break;
-            case '6':
-                cout << "Saliendo...\n";
-                break;
-            default:
-                cout << "Opción no válida.\n";
-                break;
+        if (opcion == "1" || opcion == "Add") {
+            ingresarEventos(eventos);
+        } else if (opcion == "2" || opcion == "Print") {
+            mostrarEventos(eventos);
+        } else if (opcion == "3") {
+            eliminarEvento(eventos);
+        } else if (opcion == "4") {
+            eliminarEventosPorFecha(eventos);
+        } else if (opcion == "5" || opcion == "Find") {
+            buscarEventosPorFecha(eventos);
+        } else if (opcion == "6") {
+            std::cout << "Saliendo...\n";
+        } else {
+            std::cout << "Opción no válida.\n";
         }
-    } while (opcion != '6');
+    } while (opcion != "6");
 
     return 0;
 }
@@ -100,7 +92,7 @@ void ingresarEventos(map<string, vector<string>>& eventos) {
 
     do {
         do {
-            cout << "Ingrese la fecha y el evento : ";
+            cout << "Add ";
             getline(cin, fechaEvento);
 
             istringstream iss(fechaEvento);
@@ -136,7 +128,7 @@ void mostrarEventos(const map<string, vector<string>>& eventos) {
 void eliminarEvento(map<string, vector<string>>& eventos) {
     string fechaEvento;
     
-    cout << "Ingrese la fecha y el nombre del evento a eliminar: ";
+    cout << "Del ";
     getline(cin, fechaEvento);
 
     istringstream iss(fechaEvento);
@@ -178,7 +170,7 @@ void eliminarEvento(map<string, vector<string>>& eventos) {
 void eliminarEventosPorFecha(map<string, vector<string>>& eventos) {
     string fecha;
 
-    cout << "Ingrese la fecha de los eventos a eliminar: ";
+    cout << "Del";
     cin >> fecha;
     cin.ignore();
 
@@ -201,7 +193,7 @@ void eliminarEventosPorFecha(map<string, vector<string>>& eventos) {
 void buscarEventosPorFecha(const map<string, vector<string>>& eventos) {
     string fecha;
 
-    cout << "Ingrese la fecha para buscar eventos: ";
+    cout << "Find ";
     cin >> fecha;
     cin.ignore(); 
 
