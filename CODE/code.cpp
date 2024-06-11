@@ -15,7 +15,7 @@ void mostrarEventos(const map<string, vector<string>>& eventos);
 void eliminarEvento(map<string, vector<string>>& eventos);
 void eliminarEventosPorFecha(map<string, vector<string>>& eventos);
 void buscarEventosPorFecha(const map<string, vector<string>>& eventos);
-
+string formatearFecha(int anio, int mes, int dia);
 
 int main() {
     map<string, vector<string>> eventos;
@@ -244,7 +244,7 @@ void buscarEventosPorFecha(const map<string, vector<string>>& eventos) {
         }
     } else {
         cout << "No se encontraron eventos en la fecha " << fecha << ".\n";
-    }
+       }
 }
 
 bool eventoExiste(const vector<string>& listaEventos, const string& evento) {
