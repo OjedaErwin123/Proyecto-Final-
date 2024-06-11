@@ -135,19 +135,21 @@ void mostrarEventos(const map<string, vector<string>>& eventos) {
 }
 
 void eliminarEvento(map<string, vector<string>>& eventos) {
+    string fechaEvento;
+    
+    cout << "Ingrese la fecha y el nombre del evento a eliminar: ";
+    getline(cin, fechaEvento);
+
+    istringstream iss(fechaEvento);
     string fecha, evento;
 
-    cout << "Ingrese la fecha del evento a eliminar (aaaa-mm-dd): ";
-    cin >> fecha;
-    cin.ignore(); 
+    iss >> fecha;
+    getline(iss, evento);
 
     if (!validarFecha(fecha)) {
         cout << "Fecha no válida.\n";
         return;
     }
-
-    cout << "Ingrese el nombre del evento a eliminar: ";
-    getline(cin, evento);
 
     auto it = eventos.find(fecha);
     if (it != eventos.end()) {
@@ -165,15 +167,14 @@ void eliminarEvento(map<string, vector<string>>& eventos) {
                 eventos.erase(it);
             }
             cout << "Deleted successfully.\n";
-        } 
-        else {
+        } else {
             cout << "Event not found.\n";
         }
-    } 
-    else {
+    } else {
         cout << "Event not found.\n";
     }
 }
+
 
 void eliminarEventosPorFecha(map<string, vector<string>>& eventos) {
     string fecha;
