@@ -3,11 +3,13 @@
 #include <set>
 #include <iomanip>
 #include <vector>
+#include <algorithm>
 
 using namespace std;
 
 
 bool validarFecha(const string& fecha);//Descomponer dia fecha y año
+bool eventoExiste(const vector<string>& listaEventos, const string& evento);
 void ingresarEventos(map<string, vector<string>>& eventos);
 void mostrarEventos(const map<string, vector<string>>& eventos);
 void eliminarEvento(map<string, vector<string>>& eventos);
@@ -76,7 +78,7 @@ bool validarFecha(const string& fecha) {
             return true;
         } 
         catch (...) {
-            cout << "Month value is invalid: -"<<mesStr<<"\n";
+            cout <<"Wrong date format: "<<fecha<<"\n";
             return false;
         }
     } 
@@ -84,6 +86,14 @@ bool validarFecha(const string& fecha) {
         cout << "Wrong date format: "<<fecha<<"\n";
         return false;
     }
+}
+
+string formatearFecha(int anio, int mes, int dia) {
+    ostringstream newf;
+    newf << setw(4) << setfill('0') << anio << "-"
+        << setw(2) << setfill('0') << mes << "-"
+        << setw(2) << setfill('0') << dia;
+    return newf.str();
 }
 
 void ingresarEventos(map<string, vector<string>>& eventos) {
@@ -98,28 +108,40 @@ void ingresarEventos(map<string, vector<string>>& eventos) {
             istringstream iss(fechaEvento);
             string fecha, evento;
 
-            iss >> fecha;
+            int anio, mes, dia;
+
+            iss >> anio;
+            iss.ignore(1); 
+            iss >> mes;
+            iss.ignore(1); 
+            iss >> dia;
             getline(iss, evento);
 
+            fecha = formatearFecha(anio, mes, dia);
+
             if (validarFecha(fecha)) {
-                eventos[fecha].push_back(evento);
+                auto& listaEventos = eventos[fecha];
+                if (!eventoExiste(listaEventos, evento)) {
+                    listaEventos.push_back(evento);
+                } else {
+                    continue;
+                }
                 break;
             }
         } while (true);
 
         cout << "¿Desea ingresar otro evento? (s/n): ";
         cin >> opcion;
-        cin.ignore();
+        cin.ignore(); 
     } while (opcion == 's' || opcion == 'S');
 }
 
 
 void mostrarEventos(const map<string, vector<string>>& eventos) {
-    cout << "\nEventos almacenados:\n";
     for (const auto& par : eventos) {
-        cout << "Fecha: " << par.first << " -> Eventos: ";
+        cout << par.first << " ";
         for (const auto& evento : par.second) {
-            cout << evento << "; ";
+            cout << evento <<endl;
         }
         cout <<endl;
     }
@@ -133,9 +155,16 @@ void eliminarEvento(map<string, vector<string>>& eventos) {
 
     istringstream iss(fechaEvento);
     string fecha, evento;
+    int anio, mes, dia;
 
-    iss >> fecha;
+    iss >> anio;
+    iss.ignore(1); 
+    iss >> mes;
+    iss.ignore(1); 
+    iss >> dia;
     getline(iss, evento);
+
+    fecha = formatearFecha(anio, mes, dia);
 
     if (!validarFecha(fecha)) {
         cout << "Fecha no válida.\n";
@@ -169,10 +198,12 @@ void eliminarEvento(map<string, vector<string>>& eventos) {
 
 void eliminarEventosPorFecha(map<string, vector<string>>& eventos) {
     string fecha;
+    int anio, mes, dia;
 
-    cout << "Del";
-    cin >> fecha;
-    cin.ignore();
+    cout << "Del ";
+    cin >> anio >> mes >> dia;
+    cin.ignore(); 
+    fecha = formatearFecha(anio, mes, dia);
 
     if (!validarFecha(fecha)) {
         cout << "Fecha no válida.\n";
@@ -204,12 +235,23 @@ void buscarEventosPorFecha(const map<string, vector<string>>& eventos) {
 
     auto it = eventos.find(fecha);
     if (it != eventos.end()) {
-        cout << "Eventos en la fecha " << fecha << ":\n";
-        for (const auto& evento : it->second) {
-            cout << "- " << evento << "\n";
+        vector<string> eventosOrdenados = it->second;
+        sort(eventosOrdenados.begin(), eventosOrdenados.end()); // Ordenar eventos
+
+        //cout << "Eventos en la fecha " << fecha << " (ordenados):\n";
+        for (const auto& evento : eventosOrdenados) {
+            cout << "- " << evento << endl;
         }
-    } 
-    else {
+    } else {
         cout << "No se encontraron eventos en la fecha " << fecha << ".\n";
     }
+}
+
+bool eventoExiste(const vector<string>& listaEventos, const string& evento) {
+    for (const auto& e : listaEventos) {
+        if (e == evento) {
+            return true;
+        }
+    }
+    return false;
 }
