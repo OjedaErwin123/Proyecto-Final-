@@ -8,9 +8,9 @@ using namespace std;
 
 
 bool validarFecha(const string& fecha);//Descomponer dia fecha y año
-void ingresarEventos(map<string, string>& eventos);
-void mostrarEventos(const map<string, string>& eventos);
-void eliminarEvento(map<string, string>& eventos);
+void ingresarEventos(map<string, vector<string>>& eventos);
+void mostrarEventos(const map<string, vector<string>>& eventos);
+void eliminarEvento(map<string, vector<string>>& eventos);
 void eliminarEventosPorFecha(map<string, vector<string>>& eventos);
 void buscarEventosPorFecha(const map<string, vector<string>>& eventos);
 
@@ -25,7 +25,8 @@ int main() {
         cout << "2. Mostrar eventos\n";
         cout << "3. Eliminar evento\n";
         cout << "4. Eliminar todos los eventos de una fecha\n";
-        cout << "5. Salir\n";
+        cout << "5. Buscar eventos por fecha\n";
+        cout << "6. Salir\n";
         cout << "Seleccione una opción: ";
         cin >> opcion;
         cin.ignore();
@@ -44,23 +45,26 @@ int main() {
                 eliminarEventosPorFecha(eventos);
                 break;
             case '5':
+                buscarEventosPorFecha(eventos);
+                break;
+            case '6':
                 cout << "Saliendo...\n";
                 break;
             default:
                 cout << "Opción no válida.\n";
                 break;
         }
-    } while (opcion != '5');
+    } while (opcion != '6');
 
     return 0;
 }
 
 
-bool validarFecha(const string& fecha) {
+/*bool validarFecha(const string& fecha) {
     istringstream iss(fecha);
     string dia, mes, anio;
 
-    if (getline(iss, dia, '-') && getline(iss, mes, '-') && getline(iss, anio)) {
+    if (getline(iss, anio, '-') && getline(iss, mes, '-') && getline(iss, dia)) {
         int diaInt = stoi(dia);
         int mesInt = stoi(mes);
         
@@ -68,15 +72,48 @@ bool validarFecha(const string& fecha) {
             return true;
         } else {
             if (diaInt <= 0) {
-                cout << "El día debe ser mayor que 0.\n";
+                cout << "Day value is invalid: " <<diaInt<<"\n";
             }
             if (mesInt <= 0 || mesInt > 12) {
-                cout << "El mes debe estar entre 1 y 12.\n";
+                cout << "Month value is invalid: "<<mesInt<<"\n";
             }
             return false;
         }
     } else {
-        cout << "Formato de fecha incorrecto. Use dd-mm-aaaa.\n";
+        cout << "Wrong date format: "<<fecha<<"\n";
+        return false;
+    }
+}*/
+
+bool validarFecha(const string& fecha) {
+    istringstream iss(fecha);
+    string anioStr, mesStr, diaStr;
+
+    if (getline(iss, anioStr, '-') && getline(iss, mesStr, '-') && getline(iss, diaStr)) {
+        try {
+            int anio = stoi(anioStr);
+            int mes = stoi(mesStr);
+            int dia = stoi(diaStr);
+
+            if (mes <= 0 || mes > 12) {
+                cout << "Month value is invalid: " << mesStr << "\n";
+                return false;
+            }
+
+            if (dia <= 0 || dia > 31) {
+                cout << "Day value is invalid: " << diaStr << "\n";
+                return false;
+            }
+
+            return true;
+        } 
+        catch (...) {
+            cout << "Month value is invalid: -"<<mesStr<<"\n";
+            return false;
+        }
+    } 
+    else {
+        cout << "Wrong date format: "<<fecha<<"\n";
         return false;
     }
 }
@@ -87,7 +124,7 @@ void ingresarEventos(map<string, vector<string>>& eventos) {
 
     do {
         do {
-            cout << "Ingrese la fecha (dd-mm-aaaa): ";
+            cout << "Ingrese la fecha (aaaa-mm-dd): ";
             cin >> fecha;
             cin.ignore(); 
         } while (!validarFecha(fecha));
@@ -124,7 +161,7 @@ void mostrarEventos(const map<string, vector<string>>& eventos) {
 void eliminarEvento(map<string, vector<string>>& eventos) {
     string fecha, evento;
 
-    cout << "Ingrese la fecha del evento a eliminar (dd-mm-aaaa): ";
+    cout << "Ingrese la fecha del evento a eliminar (aaaa-mm-dd): ";
     cin >> fecha;
     cin.ignore(); 
 
@@ -152,10 +189,12 @@ void eliminarEvento(map<string, vector<string>>& eventos) {
                 eventos.erase(it);
             }
             cout << "Deleted successfully.\n";
-        } else {
+        } 
+        else {
             cout << "Event not found.\n";
         }
-    } else {
+    } 
+    else {
         cout << "Event not found.\n";
     }
 }
@@ -163,7 +202,7 @@ void eliminarEvento(map<string, vector<string>>& eventos) {
 void eliminarEventosPorFecha(map<string, vector<string>>& eventos) {
     string fecha;
 
-    cout << "Ingrese la fecha de los eventos a eliminar (dd-mm-aaaa): ";
+    cout << "Ingrese la fecha de los eventos a eliminar (aaaa-mm-dd): ";
     cin >> fecha;
     cin.ignore();
 
@@ -177,7 +216,8 @@ void eliminarEventosPorFecha(map<string, vector<string>>& eventos) {
         int eventosEliminados = it->second.size();
         eventos.erase(it);
         cout << "Deleted " << eventosEliminados << " events\n";
-    } else {
+    } 
+    else {
         cout << "Deleted 0 events\n";
     }
 }
@@ -185,9 +225,9 @@ void eliminarEventosPorFecha(map<string, vector<string>>& eventos) {
 void buscarEventosPorFecha(const map<string, vector<string>>& eventos) {
     string fecha;
 
-    cout << "Ingrese la fecha para buscar eventos (dd-mm-aaaa): ";
+    cout << "Ingrese la fecha para buscar eventos (aaaa-mm-dd): ";
     cin >> fecha;
-    cin.ignore(); // Ignorar el carácter de nueva línea residual
+    cin.ignore(); 
 
     if (!validarFecha(fecha)) {
         cout << "Fecha no válida.\n";
@@ -200,7 +240,8 @@ void buscarEventosPorFecha(const map<string, vector<string>>& eventos) {
         for (const auto& evento : it->second) {
             cout << "- " << evento << "\n";
         }
-    } else {
+    } 
+    else {
         cout << "No se encontraron eventos en la fecha " << fecha << ".\n";
     }
 }
