@@ -60,30 +60,6 @@ int main() {
 }
 
 
-/*bool validarFecha(const string& fecha) {
-    istringstream iss(fecha);
-    string dia, mes, anio;
-
-    if (getline(iss, anio, '-') && getline(iss, mes, '-') && getline(iss, dia)) {
-        int diaInt = stoi(dia);
-        int mesInt = stoi(mes);
-        
-        if (diaInt > 0 && mesInt > 0 && mesInt <= 12) {
-            return true;
-        } else {
-            if (diaInt <= 0) {
-                cout << "Day value is invalid: " <<diaInt<<"\n";
-            }
-            if (mesInt <= 0 || mesInt > 12) {
-                cout << "Month value is invalid: "<<mesInt<<"\n";
-            }
-            return false;
-        }
-    } else {
-        cout << "Wrong date format: "<<fecha<<"\n";
-        return false;
-    }
-}*/
 
 bool validarFecha(const string& fecha) {
     istringstream iss(fecha);
